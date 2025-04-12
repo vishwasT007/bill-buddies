@@ -40,9 +40,10 @@ function App() {
     };
 
     setFriends((oldState) => [...oldState, newFriend]);
+    setShowAddfriend(false);
   }
   function handleAddFriendButton() {
-    setShowAddfriend((oldStateFlase) => !oldStateFlase);
+    setShowAddfriend((oldStateFalse) => !oldStateFalse);
   }
   return (
     <div className="app">
