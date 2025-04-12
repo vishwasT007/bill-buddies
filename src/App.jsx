@@ -38,7 +38,10 @@ function App() {
       <div className="sidebar">
         <FriendsList />
         {showAddFriend ? <AddFriends /> : null}
-        <Button label={"Add Friends"} onClick={handleAddFriendButton} />
+        <Button
+          label={showAddFriend ? "Close" : "Add Friends"}
+          onClick={handleAddFriendButton}
+        />
       </div>
       <SplitBill />
     </div>
