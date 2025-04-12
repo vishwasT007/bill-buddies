@@ -29,15 +29,28 @@ function Button({ label, onClick }) {
 }
 
 function App() {
+  const [friends, setFriends] = useState(dummy_Friends);
   const [showAddFriend, setShowAddfriend] = useState(false);
+  function handleAddFriends(name, image) {
+    let newFriend = {
+      id: Date.now(),
+      name: name,
+      image: image,
+      balance: 0,
+    };
+
+    setFriends((oldState) => [...oldState, newFriend]);
+  }
   function handleAddFriendButton() {
     setShowAddfriend((oldStateFlase) => !oldStateFlase);
   }
   return (
     <div className="app">
       <div className="sidebar">
-        <FriendsList />
-        {showAddFriend ? <AddFriends /> : null}
+        <FriendsList friends={friends} />
+        {showAddFriend ? (
+          <AddFriends handleAddFriends={handleAddFriends} />
+        ) : null}
         <Button
           label={showAddFriend ? "Close" : "Add Friends"}
           onClick={handleAddFriendButton}
@@ -48,8 +61,7 @@ function App() {
   );
 }
 
-function FriendsList() {
-  const friends = dummy_Friends;
+function FriendsList({ friends }) {
   return (
     <div>
       <ul>
@@ -84,13 +96,31 @@ function Friend({ friend }) {
   );
 }
 
-function AddFriends() {
+function AddFriends({ handleAddFriends }) {
+  const [name, setName] = useState("");
+  const [image, setImage] = useState("https://i.pravatar.cc/48");
+
+  function handleChangeName(event) {
+    setName(event.target.value);
+  }
+
+  function handleImageChange(event) {
+    setImage(event.target.value);
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    if (!name || !image) return;
+    handleAddFriends(name, image);
+    setName("");
+    setImage("https://i.pravatar.cc/48");
+  }
   return (
-    <form className="form-add-friend">
+    <form className="form-add-friend" onSubmit={handleSubmit}>
       <label>🤓Friend Name </label>
-      <input type="text" />
+      <input type="text" value={name} onChange={handleChangeName} />
       <label>⭐️Image URL</label>
-      <input type="text" />
+      <input type="text" value={image} onChange={handleImageChange} />
       <Button label={"Add"} />
     </form>
   );
