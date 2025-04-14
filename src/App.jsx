@@ -46,14 +46,21 @@ function App() {
   }
 
   function handleAddFriendButton() {
-    setShowAddfriend((oldStateFalse) => !oldStateFalse);
+    if (selectFriend) {
+      setSelectFriend(null);
+    } else {
+      setShowAddfriend((oldStateFalse) => !oldStateFalse);
+    }
   }
   return (
     <div className="app">
       <div className="sidebar">
         <FriendsList
           friends={friends}
-          onSelect={setSelectFriend}
+          onSelect={(friend) => {
+            setSelectFriend(friend);
+            if (friend) setShowAddfriend(false); // close AddFriend if SplitBill is to be shown
+          }}
           selectFriend={selectFriend}
         />
 
