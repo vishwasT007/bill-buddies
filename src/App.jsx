@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { use, useState } from "react";
 
 const dummy_Friends = [
   {
@@ -159,17 +159,38 @@ function AddFriends({ handleAddFriends }) {
 }
 
 function SplitBill({ friend, onClose }) {
+  const [bill, setBill] = useState("");
+  const [paidByUser, setPaidByUser] = useState("");
+  const billPaidByFriend = bill ? bill - paidByUser : "";
+  const [whoIsPaying, setWhoIsPaying] = useState("user");
   return (
     <form className="form-split-bill">
       <h2>Divide the bill with {friend.name} </h2>
       <label>💶 Total Bill Amount</label>
-      <input type="number" />
+      <input
+        type="text"
+        value={bill}
+        onChange={(event) => setBill(Number(event.target.value))}
+      />
       <label>🤑 My spending </label>
-      <input type="number" />
+      <input
+        type="text"
+        value={paidByUser}
+        onChange={(event) =>
+          setPaidByUser(
+            Number(event.target.value) > bill
+              ? paidByUser
+              : Number(event.target.value)
+          )
+        }
+      />
       <label>💸 {friend.name} spending </label>
-      <input type="number" disabled />
+      <input type="text" disabled value={billPaidByFriend} />
       <label>😜Who is Paying the Bill?</label>
-      <select>
+      <select
+        value={whoIsPaying}
+        onChange={(event) => setWhoIsPaying(event.target.value)}
+      >
         <option value="user">You</option>
         <option value="friend">{friend.name}</option>
       </select>
