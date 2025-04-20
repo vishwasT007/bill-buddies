@@ -3,41 +3,40 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main # or your default branch
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
+      - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+    permissions:
+      contents: read
+      id-token: write
 
-      - name: Setup Node
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: "18" # Ensure this matches the version you need
 
-      - run: npm ci
-      - run: npm run build # must create a 'dist' or 'build' folder
+      - name: Install dependencies and build
+        run: |
+          npm install
+          npm run build
 
-      - uses: actions/upload-pages-artifact@v2
+      - name: Check build output
+        run: |
+          ls -la ./dist  # Ensure the output is in the dist folder
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
-          path: ./dist # or ./build depending on your project
+          name: my-artifact # The name of the artifact (must match the deploy step)
+          path: ./dist # Path to your build files
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - uses: actions/deploy-pages@v2
-        id: deployment
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v2
+        with:
+          artifact_name: my-artifact # Ensure this matches the name used in the upload step
