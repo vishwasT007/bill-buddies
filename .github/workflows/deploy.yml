@@ -7,25 +7,22 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "16"
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
 
       - name: Install dependencies and build
         run: |
           npm install
           npm run build
 
-      - name: Upload artifact (Vite output folder)
-        uses: actions/upload-artifact@v3
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4 # Updated to v4
         with:
-          path: ./dist # Vite's output folder
+          path: ./dist # Correct build folder for Vite
 
       - name: Deploy to GitHub Pages
         id: deployment
