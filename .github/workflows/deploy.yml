@@ -1,42 +1,70 @@
-name: Deploy to GitHub Pages
+name: Deploy Wowchemy website to GitHub Pages
+
+env:
+  WC_HUGO_VERSION: "0.119.0"
 
 on:
   push:
-    branches:
-      - main
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
-  deploy:
+  build:
+    if: github.repository_owner != 'wowchemy'
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
         with:
-          node-version: "18" # Ensure this matches the version you need
+          fetch-depth: 0
 
-      - name: Install dependencies and build
-        run: |
-          npm install
-          npm run build
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: ${{ env.WC_HUGO_VERSION }}
+          extended: true
 
-      - name: Check build output
+      - name: Restore cache
+        uses: actions/cache@v3
+        with:
+          path: /tmp/hugo_cache_runner/
+          key: ${{ runner.os }}-hugomod-${{ hashFiles('**/go.mod') }}
+          restore-keys: |
+            ${{ runner.os }}-hugomod-
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Build with Hugo
+        env:
+          HUGO_ENVIRONMENT: production
         run: |
-          ls -la ./dist  # Ensure the output is in the dist folder
+          echo "Hugo Cache Dir: $(hugo config | grep cachedir)"
+          hugo --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: my-artifact # The name of the artifact (must match the deploy step)
-          path: ./dist # Path to your build files
+          path: ./public
 
+  deploy:
+    if: github.repository_owner != 'wowchemy'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v2
-        with:
-          artifact_name: my-artifact # Ensure this matches the name used in the upload step
+        id: deployment
+        uses: actions/deploy-pages@v4
