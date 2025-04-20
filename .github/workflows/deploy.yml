@@ -8,6 +8,10 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read # Default permission for accessing the repository contents
+      id-token: write # Add this permission to allow the deployment to work
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
