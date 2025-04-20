@@ -1,12 +1,28 @@
-# React + Vite
+# 🚀 My GitHub Pages Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a simple web project hosted using **GitHub Pages** and deployed via **GitHub Actions**.  
+You can access the live site here: [🌐 Visit Site](https://vishwast007.github.io/bill-buddies/)
 
-Currently, two official plugins are available:
+> Replace `<your-repo-name>` with your actual repository name.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- HTML / CSS / JavaScript
+- [React](https://reactjs.org/) (or [Vite](https://vitejs.dev/), if applicable)
+- GitHub Actions for CI/CD
+- GitHub Pages for hosting
+
+---
+
+## 📦 Installation
+
+To run locally:
+
+```bash
+git clone https://github.com/vishwast007/bill-buddies.git
+cd <your-repo-name>
+npm install
+npm run dev # or npm start for CRA
+```
