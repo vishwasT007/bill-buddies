@@ -14,10 +14,15 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
+      - name: Install dependencies and build
+        run: |
+          npm install
+          npm run build
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: ./build # or ./dist if that's your output folder
+          path: ./dist # This is the correct build directory for Vite
 
       - name: Deploy to GitHub Pages
         id: deployment
