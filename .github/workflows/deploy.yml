@@ -9,8 +9,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     permissions:
-      contents: read # Default permission for accessing the repository contents
-      id-token: write # Add this permission to allow the deployment to work
+      contents: read
+      id-token: write
 
     steps:
       - name: Checkout code
@@ -19,18 +19,22 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18" # Update Node.js version to 18
+          node-version: "18" # Ensure this matches the version you need
 
       - name: Install dependencies and build
         run: |
           npm install
           npm run build
 
+      - name: Check build output
+        run: |
+          ls -la ./dist  # Ensure the output is in the dist folder
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: my-artifact # This is the artifact name
-          path: ./dist # Path to your build files (replace with your actual build output path)
+          name: my-artifact # The name of the artifact (must match the deploy step)
+          path: ./dist # Path to your build files
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v2
