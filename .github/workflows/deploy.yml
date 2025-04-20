@@ -2,20 +2,20 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write # Grant the necessary permission for id-token
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
 
       - name: Install dependencies and build
         run: |
@@ -25,8 +25,10 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          path: ./dist # Correct build folder for Vite
+          name: my-artifact # This is the artifact name
+          path: ./dist # Path to your build files (replace with your actual build output path)
 
       - name: Deploy to GitHub Pages
-        id: deployment
         uses: actions/deploy-pages@v2
+        with:
+          artifact_name: my-artifact # Ensure this matches the name used in the upload step
