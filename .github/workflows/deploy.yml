@@ -23,9 +23,8 @@ jobs:
           npm run build
 
       - name: Upload artifact (Vite output folder)
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-pages-artifact@v2
         with:
-          name: vite-artifact
           path: ./dist # Vite's output folder
 
       - name: Deploy to GitHub Pages
