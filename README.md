@@ -1,6 +1,5 @@
-# 🚀 My GitHub Pages Project
+# 🚀 Split bill
 
-This is a simple web project hosted using **GitHub Pages** and deployed via **GitHub Actions**.  
 You can access the live site here: [🌐 Visit Site](https://vishwast007.github.io/bill-buddies/)
 
 > Replace `<your-repo-name>` with your actual repository name.
