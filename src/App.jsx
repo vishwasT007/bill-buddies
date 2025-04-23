@@ -69,7 +69,7 @@ function App() {
           friend={selectFriend}
           onClose={() => setSelectFriend(null)}
           onSplitBill={handleSplitBill}
-          key={selectedFriend.id} // To reset the state i have used key
+          key={selectFriend.id} // To reset the state i have used key
         />
       ) : null}
     </div>
